@@ -1,0 +1,9 @@
+#scroll {
+    overflow-y:scroll;
+    max-height:225px;
+}
+
+#bg {
+    background: url('images/bg.png') no-repeat center center fixed;
+    background-size:100% auto;
+}
