@@ -27,7 +27,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">A-I-O</a>
+                <a class="navbar-brand" href="#">All-in-One</a>
             </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -36,6 +36,19 @@
                     <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Event <span class="caret"></span></a>
                     <ul class="dropdown-menu">
+                        <?php
+                            $conn = mysqli_connect("localhost", "root", "usbw", "itweek");
+                            if($conn-> connect_error) {
+                                die("Connection failed:". $conn-> connect_error);
+                            }
+                            
+                            $sql = "SHOW TABLES FROM itweek";
+                            $result = mysqli_query($conn,$sql);
+                            
+                            while ($row = mysqli_fetch_row($result)) {
+                                echo "<li><a href='#'>" . "{$row[0]}\n" . "</a></li>";
+                            }
+                        ?>
                         <li><a href="#">Event 1</a></li>
                         <li><a href="#">Event 2</a></li>
                         <li><a href="#">Event 3</a></li>
@@ -55,7 +68,9 @@
                 <div class="container-fluid">
                     <div class="jumbotron">
                         <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1">#</span>
+                            <span class="input-group-btn">
+                                <button class="btn btn-success" type="button"> Enter</button>
+                            </span>
                             <input type="text" class="form-control" placeholder="ID NUMBER" aria-describedby="basic-addon1" autofocus>
                         </div>
                         <table class="table" id="reg_table1" name="reg_table1">
@@ -98,16 +113,17 @@
             </div>
             <div class="row">
                 <div class="container-fluid">
-                    <div class="jumbotron">
-                        <h2>REGISTRATION</h2>
-                        <table class="table" id="reg_table" name="reg_table">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><center><b>Registration</b></center></div>
+                        <div style="overflow-y: scroll; max-height: 300px">
+                        <table class="table" id="reg_table" name="reg_table" >
                             <?php
                                 $conn = mysqli_connect("localhost", "root", "usbw", "itweek");
                                 if($conn-> connect_error) {
                                     die("Connection failed:". $conn-> connect_error);
                                 }
 
-                                $sql = "SELECT stud_id, firstname, lastname, course, section, time_in from thursday1_am WHERE id != (SELECT MAX(id) FROM thursday1_am) ORDER BY id DESC LIMIT 0, 4";
+                                $sql = "SELECT stud_id, firstname, lastname, course, section, time_in from thursday1_am WHERE id != (SELECT MAX(id) FROM thursday1_am) ORDER BY id DESC"; //LIMIT 0, 8
                                 $result = $conn-> query($sql);
 
                                 if($result-> num_rows > 0) {
@@ -120,6 +136,7 @@
                                 }
                             ?>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>
