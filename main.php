@@ -17,6 +17,26 @@
     </head>
 
     <body>
+        <!-- MODALS -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+            <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Create New Event</h4>
+                    </div>
+                    <div class="modal-body">
+                        <!-- PUT INPUT HERE -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTUAL BODY -->
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -37,12 +57,12 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Event <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <?php
-                            $conn = mysqli_connect("localhost", "root", "usbw", "itweek");
+                            $conn = mysqli_connect("localhost", "root", "usbw", "itweek_arrupe");
                             if($conn-> connect_error) {
                                 die("Connection failed:". $conn-> connect_error);
                             }
                             
-                            $sql = "SHOW TABLES FROM itweek";
+                            $sql = "SHOW TABLES FROM itweek_arrupe";
                             $result = mysqli_query($conn,$sql);
                             
                             while ($row = mysqli_fetch_row($result)) {
@@ -53,7 +73,7 @@
                         <li><a href="#">Event 2</a></li>
                         <li><a href="#">Event 3</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create New</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create New</a></li>
                     </ul>
                     </li>
                 </ul>
@@ -75,12 +95,12 @@
                         </div>
                         <table class="table" id="reg_table1" name="reg_table1">
                             <?php
-                                $conn = mysqli_connect("localhost", "root", "usbw", "itweek");
+                                $conn = mysqli_connect("localhost", "root", "usbw", "itweek_arrupe");
                                 if($conn-> connect_error) {
                                     die("Connection failed:". $conn-> connect_error);
                                 }
 
-                                $sql = "SELECT stud_id, firstname, lastname from thursday1_am WHERE id = (SELECT MAX(id) FROM thursday1_am)";
+                                $sql = "SELECT stud_id, firstname, lastname from monday WHERE id = (SELECT MAX(id) FROM monday)";
                                 $result = $conn-> query($sql);
 
                                 $row = $result-> fetch_assoc();
@@ -93,12 +113,12 @@
                             <table class="table" id="reg_table2" name="reg_table2">
                             <div class="row">
                                 <?php
-                                    $conn = mysqli_connect("localhost", "root", "usbw", "itweek");
+                                    $conn = mysqli_connect("localhost", "root", "usbw", "itweek_arrupe");
                                     if($conn-> connect_error) {
                                         die("Connection failed:". $conn-> connect_error);
                                     }
 
-                                    $sql = "SELECT course, section from thursday1_am WHERE id = (SELECT MAX(id) FROM thursday1_am)";
+                                    $sql = "SELECT course, section from monday WHERE id = (SELECT MAX(id) FROM monday)";
                                     $result = $conn-> query($sql);
 
                                     $row = $result-> fetch_assoc();
@@ -118,12 +138,12 @@
                         <div style="overflow-y: scroll; max-height: 300px">
                         <table class="table" id="reg_table" name="reg_table" >
                             <?php
-                                $conn = mysqli_connect("localhost", "root", "usbw", "itweek");
+                                $conn = mysqli_connect("localhost", "root", "usbw", "itweek_arrupe");
                                 if($conn-> connect_error) {
                                     die("Connection failed:". $conn-> connect_error);
                                 }
 
-                                $sql = "SELECT stud_id, firstname, lastname, course, section, time_in from thursday1_am WHERE id != (SELECT MAX(id) FROM thursday1_am) ORDER BY id DESC"; //LIMIT 0, 8
+                                $sql = "SELECT stud_id, firstname, lastname, course, section, time_in from monday WHERE id != (SELECT MAX(id) FROM monday) ORDER BY id DESC"; //LIMIT 0, 8
                                 $result = $conn-> query($sql);
 
                                 if($result-> num_rows > 0) {
