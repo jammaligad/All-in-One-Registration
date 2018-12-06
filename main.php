@@ -1,3 +1,10 @@
+<?php
+    session_start();
+    if(isset($_GET['event'])){
+        $_SESSION['event'] = $_GET['event'];
+    }
+    
+?>
 <!DOCTYPE html>
 <html lang="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,21 +25,28 @@
 
     <body>
         <!-- MODALS -->
+        <!-- CREATE NEW EVENT -->
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
             <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Create New Event</h4>
+                <form action="newEvent.php" method="post">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Create New Event</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="eventName">Event Name:</label>
+                                <input type="text" class="form-control" id="eventName" name="eventName"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Create</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <!-- PUT INPUT HERE -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
 
@@ -66,12 +80,9 @@
                             $result = mysqli_query($conn,$sql);
                             
                             while ($row = mysqli_fetch_row($result)) {
-                                echo "<li><a href='#'>" . "{$row[0]}\n" . "</a></li>";
+                                echo "<li><a href='main.php?event={$row[0]}\n'>" . "{$row[0]}\n" . "</a></li>";
                             }
                         ?>
-                        <li><a href="#">Event 1</a></li>
-                        <li><a href="#">Event 2</a></li>
-                        <li><a href="#">Event 3</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create New</a></li>
                     </ul>
@@ -100,7 +111,7 @@
                                     die("Connection failed:". $conn-> connect_error);
                                 }
 
-                                $sql = "SELECT stud_id, firstname, lastname from monday WHERE id = (SELECT MAX(id) FROM monday)";
+                                $sql = "SELECT stud_id, firstname, lastname from {$_SESSION["event"]} WHERE id = (SELECT MAX(id) FROM {$_SESSION["event"]})";
                                 $result = $conn-> query($sql);
 
                                 $row = $result-> fetch_assoc();
@@ -118,7 +129,7 @@
                                         die("Connection failed:". $conn-> connect_error);
                                     }
 
-                                    $sql = "SELECT course, section from monday WHERE id = (SELECT MAX(id) FROM monday)";
+                                    $sql = "SELECT course, section from {$_SESSION["event"]} WHERE id = (SELECT MAX(id) FROM {$_SESSION["event"]})";
                                     $result = $conn-> query($sql);
 
                                     $row = $result-> fetch_assoc();
@@ -143,7 +154,7 @@
                                     die("Connection failed:". $conn-> connect_error);
                                 }
 
-                                $sql = "SELECT stud_id, firstname, lastname, course, section, time_in from monday WHERE id != (SELECT MAX(id) FROM monday) ORDER BY id DESC"; //LIMIT 0, 8
+                                $sql = "SELECT stud_id, firstname, lastname, course, section, time_in from {$_SESSION["event"]} WHERE id != (SELECT MAX(id) FROM {$_SESSION["event"]}) ORDER BY id DESC"; //LIMIT 0, 8
                                 $result = $conn-> query($sql);
 
                                 if($result-> num_rows > 0) {
